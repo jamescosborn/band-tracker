@@ -1,8 +1,8 @@
 using System;
 using MySql.Data.MySqlClient;
-using Rename;
+using BandTracker;
 
-namespace Rename.Models
+namespace BandTracker.Models
 {
   public class DB
   {

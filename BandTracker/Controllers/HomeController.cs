@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using Rename.Models;
+using BandTracker.Models;
 
-namespace Rename.Controllers
+namespace BandTracker.Controllers
 {
     public class HomeController : Controller
     {

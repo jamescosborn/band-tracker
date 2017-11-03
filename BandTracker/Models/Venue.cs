@@ -16,31 +16,6 @@ namespace BandTracker.Models
       Id = id;
     }
 
-    public static List<Venue> GetAll()
-    {
-      List<Venue> allVenues = new List<Venue>();
-
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-      MySqlCommand cmd = conn.CreateCommand();
-      cmd.CommandText = @"SELECT * FROM venues;";
-      MySqlDataReader rdr = cmd.ExecuteReader();
-      while(rdr.Read())
-      {
-        int venueId = rdr.GetInt32(0);
-        string venueName = rdr.GetString(1);
-
-        Venue newVenue = new Venue(venueName, venueId);
-        allVenues.Add(newVenue);
-      }
-      conn.Close();
-      if(conn != null)
-      {
-        conn.Dispose();
-      }
-      return allVenues;
-    }
-
     public override bool Equals(System.Object otherVenue)
     {
       if (!(otherVenue is Venue))
@@ -61,6 +36,14 @@ namespace BandTracker.Models
       return this.Id.GetHashCode();
     }
 
+    public bool HasSamePropertiesAs(Venue other)
+    {
+      return (
+        this.Id == other.Id &&
+        this.VenueName == other.VenueName);
+    }
+
+    // CREATE
     public void Save()
        {
          MySqlConnection conn = DB.Connection();
@@ -84,6 +67,7 @@ namespace BandTracker.Models
          }
        }
 
+    // READ
     public static Venue FindById(int searchId)
     {
       MySqlConnection conn = DB.Connection();
@@ -116,6 +100,32 @@ namespace BandTracker.Models
       return output;
     }
 
+    public static List<Venue> GetAll()
+    {
+      List<Venue> allVenues = new List<Venue>();
+
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"SELECT * FROM venues;";
+      MySqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        int venueId = rdr.GetInt32(0);
+        string venueName = rdr.GetString(1);
+
+        Venue newVenue = new Venue(venueName, venueId);
+        allVenues.Add(newVenue);
+      }
+      conn.Close();
+      if(conn != null)
+      {
+        conn.Dispose();
+      }
+      return allVenues;
+    }
+
+    // UPDATE
     public void Update(Venue newVenue)
     {
       MySqlConnection conn = DB.Connection();
@@ -143,6 +153,7 @@ namespace BandTracker.Models
       }
     }
 
+    // DESTROY
     public static void ClearAll()
     {
       MySqlConnection conn = DB.Connection();
@@ -157,12 +168,6 @@ namespace BandTracker.Models
       {
         conn.Dispose();
       }
-    }
-    public bool HasSamePropertiesAs(Venue other)
-    {
-      return (
-        this.Id == other.Id &&
-        this.VenueName == other.VenueName);
     }
   }
 }

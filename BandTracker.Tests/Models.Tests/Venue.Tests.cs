@@ -40,6 +40,7 @@ namespace BandTracker.Models.Tests
     {
       Venue testVenue = new Venue("Black Sun");
       testVenue.Save();
+
       Assert.AreEqual(true,Venue.GetAll().Count==1);
     }
 

@@ -34,5 +34,38 @@ namespace BandTracker.Models.Tests
 
       Assert.AreEqual(0,resultList.Count);
     }
+
+    [TestMethod]
+    public void Save_SaveVenue_VenueSaved()
+    {
+      Venue testVenue = new Venue("Black Sun");
+      testVenue.Save();
+      Assert.AreEqual(true,Venue.GetAll().Count==1);
+    }
+
+    [TestMethod]
+    public void FindById_GetsSpecificVenueFromDatabase_Venue()
+    {
+      Venue localVenue = new Venue("Black Sun");
+      localVenue.Save();
+      Venue databaseVenue = Venue.FindById(localVenue.Id);
+
+      bool result = localVenue.HasSamePropertiesAs(databaseVenue);
+
+      Assert.AreEqual(true, result);
+    }
+    [TestMethod]
+    public void Update_UpdateVenueInDatabase_VenueWithNewInfo()
+    {
+      Venue initialVenue = new Venue("Black Sun");
+      initialVenue.Save();
+      Venue newVenue = new Venue("Zero's", initialVenue.Id);
+      initialVenue.Update(newVenue);
+      Venue updatedVenue = Venue.FindById(initialVenue.Id);
+
+      bool result = updatedVenue.HasSamePropertiesAs(newVenue);
+
+      Assert.AreEqual(true, result);
+    }
   }
 }

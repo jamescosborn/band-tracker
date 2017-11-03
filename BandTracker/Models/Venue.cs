@@ -84,20 +84,85 @@ namespace BandTracker.Models
          }
        }
 
-    public static void ClearAll()
+    public static Venue FindById(int searchId)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM venues WHERE id = @VenueId;";
+
+      MySqlParameter thisId = new MySqlParameter();
+      thisId.ParameterName = "@VenueId";
+      thisId.Value = searchId;
+      cmd.Parameters.Add(thisId);
+
+      int venueId = 0;
+      string venueName = "";
+
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
       {
-        MySqlConnection conn = DB.Connection();
-        conn.Open();
-
-        var cmd = conn.CreateCommand() as MySqlCommand;
-        cmd.CommandText = @"DELETE FROM venues;";
-        cmd.ExecuteNonQuery();
-
-        conn.Close();
-        if (conn != null)
-        {
-          conn.Dispose();
-        }
+        venueId = rdr.GetInt32(0);
+        venueName = rdr.GetString(1);
       }
+      Venue output = new Venue(venueName, venueId);
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return output;
+    }
+
+    public void Update(Venue newVenue)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE venues SET venue_name = @NewName WHERE id = @VenueId;";
+
+      MySqlParameter newName = new MySqlParameter();
+      newName.ParameterName = "@NewName";
+      newName.Value = newVenue.VenueName;
+      cmd.Parameters.Add(newName);
+
+      MySqlParameter venueId = new MySqlParameter();
+      venueId.ParameterName = "@VenueId";
+      venueId.Value = this.Id;
+      cmd.Parameters.Add(venueId);
+
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public static void ClearAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM venues;";
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+    public bool HasSamePropertiesAs(Venue other)
+    {
+      return (
+        this.Id == other.Id &&
+        this.VenueName == other.VenueName);
+    }
   }
 }

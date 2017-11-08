@@ -15,7 +15,7 @@ namespace BandTracker.Models.Tests
     }
     public VenueTests()
     {
-      DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=3306;database=band_tracker_tests;";
+      DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=band_tracker_tests;";
     }
     [TestMethod]
     public void ClearAll_ClearsAllVenuesFromDB_0()

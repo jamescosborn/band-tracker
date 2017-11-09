@@ -17,6 +17,34 @@ namespace BandTracker.Models
       Id = id;
     }
 
+    public void Save()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO bands (band_name, venue_id) VALUES (@Name, @venue_id);";
+
+      MySqlParameter name = new MySqlParameter();
+      name.ParameterName = "@Name";
+      name.Value = this.Name;
+      cmd.Parameters.Add(name);
+
+      MySqlParameter venueId = new MySqlParameter();
+      venueId.ParameterName = "@venue_id";
+      venueId.Value = this.VenueId;
+      cmd.Parameters.Add(venueId);
+
+      cmd.ExecuteNonQuery();
+      this.Id = (int)cmd.LastInsertedId;
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
     // See all Band's belonging to a Venue
     public static List<Band> GetAll()
     {
@@ -126,33 +154,6 @@ namespace BandTracker.Models
     }
 
     // Adds new band to a specific Venue. Cannot add a Band if no Venue Id is entered.
-    public void Save()
-    {
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-
-      var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO bands (band_name, venue_id) VALUES (@Name, @venue_id);";
-
-      MySqlParameter name = new MySqlParameter();
-      name.ParameterName = "@Name";
-      name.Value = this.Name;
-      cmd.Parameters.Add(name);
-
-      MySqlParameter venueId = new MySqlParameter();
-      venueId.ParameterName = "@venue_id";
-      venueId.Value = this.VenueId;
-      cmd.Parameters.Add(venueId);
-
-      cmd.ExecuteNonQuery();
-      this.Id = (int)cmd.LastInsertedId;
-
-      conn.Close();
-      if (conn != null)
-      {
-        conn.Dispose();
-      }
-    }
 
     public bool HasSamePropertiesAs(Band other)
     {

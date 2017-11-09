@@ -8,12 +8,10 @@ namespace BandTracker.Models
   {
     public int Id {get; private set;}
     public string Name {get; private set;}
-    public int VenueId {get; private set;}
 
     public Band(string name, int venueId = 0, int id = 0)
     {
       Name = name;
-      VenueId = venueId;
       Id = id;
     }
 
@@ -32,8 +30,7 @@ namespace BandTracker.Models
       {
         int id = rdr.GetInt32(0);
         string name = rdr.GetString(1);
-        int venueId = rdr.GetInt32(2);
-        Band newBand = new Band(name, venueId, id);
+        Band newBand = new Band(name, id);
         output.Add(newBand);
       }
 
@@ -106,16 +103,14 @@ namespace BandTracker.Models
 
       int bandId = 0;
       string bandName = "";
-      int venueId = 0;
 
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
         bandId = rdr.GetInt32(0);
         bandName = rdr.GetString(1);
-        venueId = rdr.GetInt32(2);
       }
-      Band output = new Band(bandName, venueId, bandId);
+      Band output = new Band(bandName, bandId);
 
       conn.Close();
       if (conn != null)
@@ -132,17 +127,13 @@ namespace BandTracker.Models
       conn.Open();
 
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO bands (band_name, venue_id) VALUES (@Name, @venue_id);";
+      cmd.CommandText = @"INSERT INTO bands (band_name) VALUES (@Name);";
 
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@Name";
       name.Value = this.Name;
       cmd.Parameters.Add(name);
 
-      MySqlParameter venueId = new MySqlParameter();
-      venueId.ParameterName = "@venue_id";
-      venueId.Value = this.VenueId;
-      cmd.Parameters.Add(venueId);
 
       cmd.ExecuteNonQuery();
       this.Id = (int)cmd.LastInsertedId;
@@ -158,8 +149,7 @@ namespace BandTracker.Models
     {
       return (
         this.Id == other.Id &&
-        this.Name == other.Name &&
-        this.VenueId == other.VenueId);
+        this.Name == other.Name);
     }
 
     public override bool Equals(System.Object otherBand)

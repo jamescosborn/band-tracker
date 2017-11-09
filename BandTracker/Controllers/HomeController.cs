@@ -24,7 +24,13 @@ namespace BandTracker.Controllers
       return View();
     }
 
-    [HttpPost("/venues/add/venue")]
+    [HttpGet("/bands/add")]
+    public ActionResult AddBand()
+    {
+      return View();
+    }
+
+    [HttpPost("/venues/add/success")]
     public ActionResult AddVenueSuccess()
     {
       string venueName = Request.Form["venue-name"];
@@ -35,10 +41,15 @@ namespace BandTracker.Controllers
       return View(model);
     }
 
-    [HttpPost("/venues/bands/add")]
+    [HttpPost("/bands/add/success")]
     public ActionResult AddBandSuccess()
     {
-      return View("AddBandSuccess");
+      string bandName = Request.Form["band-name"];
+      Band newBand = new Band(bandName);
+      newBand.Save();
+
+      List<Band> model = Band.GetAll();
+      return View(model);
     }
 
     [HttpGet("/venues/{venueId}/bands/new")]
@@ -77,16 +88,16 @@ namespace BandTracker.Controllers
       return View(model);
     }
 
-    [HttpGet("/bands/{id}")]
-    public ActionResult BandDetail(int id)
-    {
-      Dictionary<string, object> model = new Dictionary<string, object>();
-      Band selectedBand = Band.Find(id);
-      List<Venue> bandsVenues = selectedBand.GetVenues();
-      model.Add("band", selectedBand);
-      model.Add("venues", bandsVenues);
-
-      return View(model);
-    }
+    // [HttpGet("/bands/{id}")]
+    // public ActionResult BandDetail(int id)
+    // {
+    //   Dictionary<string, object> model = new Dictionary<string, object>();
+    //   Band selectedBand = Band.Find(id);
+    //   List<Venue> bandsVenues = selectedBand.GetVenues();
+    //   model.Add("band", selectedBand);
+    //   model.Add("venues", bandsVenues);
+    //
+    //   return View(model);
+    // }
   }
 }

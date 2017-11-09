@@ -10,7 +10,11 @@
   <ul>
     <h4><a href="/venues/@venue.Id">@venue.Name</a></h4>
     <li><a href="/venues/@venue.Id/update">Update</a></li>
-    <li>Delete</li>
+    <li>
+      <form action="/venues/@venue.Id/delete/success" method="post">
+      <button class="btn btn-danger" type="submit" name="submit-button">Delete</button>
+      </form>
+    </li>
   </ul>
 }
 

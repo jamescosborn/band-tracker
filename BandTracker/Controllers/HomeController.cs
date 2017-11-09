@@ -67,6 +67,13 @@ namespace BandTracker.Controllers
       return View();
     }
 
+    [HttpPost("/venues/{venueId}/delete/success")]
+    public ActionResult DeleteVenueSuccess(int venueId)
+    {
+      Venue.Delete(venueId);
+      return View();
+    }
+
     [HttpPost("/venues/{venueId}/bands/add")]
     public ActionResult AddBandToVenue(int venueId)
     {
@@ -82,6 +89,8 @@ namespace BandTracker.Controllers
 
       return View("VenueDetail", model);
     }
+
+
 
     [HttpGet("/venues/{id}")]
     public ActionResult VenueDetail(int id)

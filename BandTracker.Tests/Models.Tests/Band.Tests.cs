@@ -15,6 +15,7 @@ namespace BandTracker.Models.Tests
     public void Dispose()
     {
       Band.ClearAll();
+      Venue.ClearAll();
     }
 
     [TestMethod]
@@ -66,14 +67,32 @@ namespace BandTracker.Models.Tests
       Band localBand = new Band("MGMT");
       localBand.Save();
       Band databaseBand = Band.Find(localBand.Id);
-      Console.WriteLine(localBand.Id);
-      Console.WriteLine(localBand.Name);
-      Console.WriteLine(databaseBand.Id);
-      Console.WriteLine(databaseBand.Name);
 
       bool result = localBand.HasSamePropertiesAs(databaseBand);
 
       Assert.AreEqual(true, result);
+    }
+
+    [TestMethod]
+    public void AddVenues_AddsVenueToBand_VenuesList()
+    {
+      //Arrange
+      Band testBand = new Band("Motorhead");
+      testBand.Save();
+
+      Venue testVenue = new Venue("American Legion Hall");
+      testVenue.Save();
+
+      //Act
+      testBand.AddVenue(testVenue);
+
+      List<Venue> result = testBand.GetVenues();
+      List<Venue> testList = new List<Venue>{testVenue};
+
+      Console.WriteLine(result.Count);
+      Console.WriteLine(testList.Count);
+      //Assert
+      CollectionAssert.AreEqual(testList, result);
     }
   }
 }

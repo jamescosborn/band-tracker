@@ -15,6 +15,7 @@ namespace BandTracker.Models.Tests
     public void Dispose()
     {
       Venue.ClearAll();
+      Band.ClearAll();
     }
 
     [TestMethod]
@@ -77,14 +78,78 @@ namespace BandTracker.Models.Tests
       Venue localVenue = new Venue("The Crystal Ballroom");
       localVenue.Save();
       Venue databaseVenue = Venue.FindById(localVenue.Id);
-      Console.WriteLine(localVenue.Id);
-      Console.WriteLine(localVenue.Name);
-      Console.WriteLine(databaseVenue.Id);
-      Console.WriteLine(databaseVenue.Name);
 
       bool result = localVenue.HasSamePropertiesAs(databaseVenue);
 
       Assert.AreEqual(true, result);
+    }
+
+    [TestMethod]
+    public void Delete_DeletesVenueAssociationsFromDatabase_VenueList()
+    {
+      //Arrange
+      Band testBand = new Band("Metallica");
+      testBand.Save();
+
+      string testName = "80s Thrash Metal";
+      Venue testVenue = new Venue(testName);
+      testVenue.Save();
+
+      //Act
+      testVenue.AddBand(testBand);
+      testVenue.Delete();
+
+      List<Venue> resultBandVenues = testBand.GetVenues();
+      List<Venue> testBandVenues = new List<Venue> {};
+
+      //Assert
+      CollectionAssert.AreEqual(testBandVenues, resultBandVenues);
+    }
+
+    [TestMethod]
+    public void Test_AddBand_AddsBandToVenue()
+    {
+      //Arrange
+      Venue testVenue = new Venue("The Black Lodge");
+      testVenue.Save();
+
+      Band testBand = new Band("Radiohead");
+      testBand.Save();
+
+      Band testBand2 = new Band("Queens of the Stone Age");
+      testBand2.Save();
+
+      //Act
+      testVenue.AddBand(testBand);
+      testVenue.AddBand(testBand2);
+
+      List<Band> result = testVenue.GetBands();
+      List<Band> testList = new List<Band>{testBand, testBand2};
+
+      //Assert
+      CollectionAssert.AreEqual(testList, result);
+    }
+
+    [TestMethod]
+    public void GetBands_ReturnsAllVenueBands_BandList()
+    {
+      //Arrange
+      Venue testVenue = new Venue("The Black Sun");
+      testVenue.Save();
+
+      Band testBand1 = new Band("Vitaly Chernobyl");
+      testBand1.Save();
+
+      Band testBand2 = new Band("Ariel Pink");
+      testBand2.Save();
+
+      //Act
+      testVenue.AddBand(testBand1);
+      List<Band> savedBands = testVenue.GetBands();
+      List<Band> testList = new List<Band> {testBand1};
+
+      //Assert
+      CollectionAssert.AreEqual(testList, savedBands);
     }
   }
 }

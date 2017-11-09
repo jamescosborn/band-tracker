@@ -1,0 +1,18 @@
+@using BandTracker.Models;
+@{
+  Layout = "_Layout";
+}
+
+<div class="well">
+<h1>Venue added!</h1>
+<h3>Venues:</h3>
+<ul>
+@{
+  foreach(var Venue in Model)
+  {
+      <li><a href="/venues/@Venue.Id">@Venue.Name</a></li>
+  }
+}
+</ul>
+<a href='/venues/add'>Add a new Venue</a>
+</div>

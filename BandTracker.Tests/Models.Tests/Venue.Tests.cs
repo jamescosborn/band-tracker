@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BandTracker.Models;
 
@@ -9,62 +8,77 @@ namespace BandTracker.Models.Tests
   [TestClass]
   public class VenueTests : IDisposable
   {
+    public VenueTests()
+    {
+      DBConfiguration.ConnectionString = "server=localhost; user id=root; password=root; port=8889; database=band_tracker_test;";
+    }
     public void Dispose()
     {
       Venue.ClearAll();
     }
-    public VenueTests()
-    {
-      DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=band_tracker_test;";
-    }
-    [TestMethod]
-    public void ClearAll_ClearsAllVenuesFromDB_0()
-    {
-      List<Venue> venueTestList = new List <Venue>();
-      Venue venueA = new Venue("Black Sun");
-      Venue venueB = new Venue("St. Alphonzo's Pancake Breakfast");
-      Venue venueC = new Venue("The 3rd Rail");
-
-      venueTestList.Add(venueA);
-      venueTestList.Add(venueB);
-      venueTestList.Add(venueC);
-
-      Venue.ClearAll();
-      List<Venue> resultList = Venue.GetAll();
-
-      Assert.AreEqual(0,resultList.Count);
-    }
 
     [TestMethod]
-    public void Save_SaveVenue_VenueSaved()
+    public void GetAll_DatabaseIsEmptyAtFirst_0()
     {
-      Venue testVenue = new Venue("Black Sun");
-      testVenue.Save();
+      int result = Venue.GetAll().Count;
 
-      Assert.AreEqual(true,Venue.GetAll().Count==1);
+      Assert.AreEqual(0, result);
     }
-
     [TestMethod]
-    public void FindById_GetsSpecificVenueFromDatabase_Venue()
+    public void HasSamePropertiesAs_BothHaveSameProperties_True()
     {
-      Venue localVenue = new Venue("Black Sun");
+      Venue venue1 = new Venue("The Echo");
+      Venue venue2 = new Venue("The Echo");
+
+      bool result = venue1.HasSamePropertiesAs(venue2);
+
+      Assert.AreEqual(true, result);
+    }
+    [TestMethod]
+    public void HasSamePropertiesAs_BothDontHaveSameProperties_False()
+    {
+      Venue venue1 = new Venue("The Echo");
+      Venue venue2 = new Venue("CBGBs");
+
+      bool result = venue1.HasSamePropertiesAs(venue2);
+
+      Assert.AreEqual(false, result);
+    }
+    [TestMethod]
+    public void Save_SavesVenueToDatabase_DatabaseSaved()
+    {
+      Venue localVenue = new Venue("The Echo");
       localVenue.Save();
-      Venue databaseVenue = Venue.FindById(localVenue.Id);
+      Venue databaseVenue = Venue.GetAll()[0];
 
       bool result = localVenue.HasSamePropertiesAs(databaseVenue);
 
       Assert.AreEqual(true, result);
     }
     [TestMethod]
-    public void Update_UpdateVenueInDatabase_VenueWithNewInfo()
+    public void Save_SavesMultipleVenuesToDatabase_VenuesSaved()
     {
-      Venue initialVenue = new Venue("Black Sun");
-      initialVenue.Save();
-      Venue newVenue = new Venue("Zero's", initialVenue.Id);
-      initialVenue.Update(newVenue);
-      Venue updatedVenue = Venue.FindById(initialVenue.Id);
+      Venue localVenue1 = new Venue("Sunset Lounge");
+      localVenue1.Save();
+      Venue localVenue2 = new Venue("The Troubadour");
+      localVenue2.Save();
+      Venue databaseVenue1 = Venue.GetAll()[0];
+      Venue databaseVenue2 = Venue.GetAll()[1];
 
-      bool result = updatedVenue.HasSamePropertiesAs(newVenue);
+      bool result =
+        localVenue1.HasSamePropertiesAs(databaseVenue1) &&
+        localVenue2.HasSamePropertiesAs(databaseVenue2);
+
+      Assert.AreEqual(true, result);
+    }
+    [TestMethod]
+    public void FindById_GetsVenueFromDatabase_VenueFound()
+    {
+      Venue localVenue = new Venue("The Crystal Ballroom");
+      localVenue.Save();
+      Venue databaseVenue = Venue.FindById(localVenue.Id);
+
+      bool result = localVenue.HasSamePropertiesAs(databaseVenue);
 
       Assert.AreEqual(true, result);
     }

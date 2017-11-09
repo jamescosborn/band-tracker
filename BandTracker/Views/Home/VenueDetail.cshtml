@@ -1,0 +1,24 @@
+@using BandTracker.Models;
+@{
+  Layout = "_Layout";
+}
+<div class="well">
+<h1>Venue Info:</h1>
+<h2>Name: @Model["venue"].Name</h2>
+<h2>Bands that have played here:</h2>
+
+@{
+  foreach(var band in Model["bands"])
+  {
+    <h3>@band.Name</h3>
+  }
+}
+
+@* 1) Why can't I use .Id in this for loop? I need another way to route to Delete. Why does it work for Update but not Delete? Same routing convention*@
+
+@* 2) My update function isn't working quite right. Is there a problem with the syntax, or how I'm using the new name received from the Update form? *@
+
+<ul>
+<li><a href="/venues/@Model["venue"].Id/bands/new">Add another band</a></li>
+<li><a href="/">Home</a></li>
+</ul>

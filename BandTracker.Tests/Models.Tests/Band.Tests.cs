@@ -51,7 +51,7 @@ namespace BandTracker.Models.Tests
     [TestMethod]
     public void Save_SaveBand_BandSaved()
     {
-      Band testBand = new Band("Zepperella");
+      Band testBand = new Band("LCD Soundsystem");
       testBand.Save();
 
       List<Band> bands = Band.GetAll();
@@ -59,6 +59,18 @@ namespace BandTracker.Models.Tests
       Console.WriteLine(result);
 
       Assert.AreEqual(true,Band.GetAll().Count==1);
+    }
+
+    [TestMethod]
+    public void Find_GetsSpecificBandFromDatabase_Band()
+    {
+      Band localBand = new Band("MGMT");
+      localBand.Save();
+      Band databaseBand = Band.Find(localBand.Id);
+
+      bool result = localBand.HasSamePropertiesAs(databaseBand);
+
+      Assert.AreEqual(true, result);
     }
   }
 }

@@ -1,0 +1,20 @@
+@using BandTracker.Models;
+@{
+  Layout = "_Layout";
+}
+<div class="well">
+<h1>Band Info:</h1>
+<h2>Name: @Model["band"].Name</h2>
+<h2>Venues this band has played at:</h2>
+
+@{
+  foreach(var venue in Model["venues"])
+  {
+    <h3>@venue.Name</h3>
+  }
+}
+
+<ul>
+<li><a href="/venues/@Model["venue"].Id/bands/new">Add another band</a></li>
+<li><a href="/">Home</a></li>
+</ul>

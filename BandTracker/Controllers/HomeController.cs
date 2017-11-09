@@ -125,7 +125,7 @@ namespace BandTracker.Controllers
         Venue venue = Venue.FindById(venueId);
         Band band = Band.Find(Int32.Parse(Request.Form["band-id"]));
         venue.AddBand(band);
-        return View("AddBandSuccess");
+        return View("Success");
     }
     //ADD CATEGORY TO TASK
     [HttpPost("bands/{bandId}/venues/new")]
@@ -134,7 +134,7 @@ namespace BandTracker.Controllers
         Band band = Band.Find(bandId);
         Venue venue = Venue.FindById(Int32.Parse(Request.Form["venue-id"]));
         band.AddVenue(venue);
-        return View("AddVenueSuccess");
+        return View("Success");
     }
   }
 }

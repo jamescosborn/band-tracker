@@ -94,5 +94,27 @@ namespace BandTracker.Models.Tests
       //Assert
       CollectionAssert.AreEqual(testList, result);
     }
+
+    [TestMethod]
+    public void GetVenues_ReturnsAllBandsVenues_VenueList()
+    {
+      //Arrange
+      Band testBand = new Band("The Black Keys");
+      testBand.Save();
+
+      Venue testVenue1 = new Venue("Sunset Lounge");
+      testVenue1.Save();
+
+      Venue testVenue2 = new Venue("The Smell");
+      testVenue2.Save();
+
+      //Act
+      testBand.AddVenue(testVenue1);
+      List<Venue> savedVenues = testBand.GetVenues();
+      List<Venue> testList = new List<Venue> {testVenue1};
+
+      //Assert
+      CollectionAssert.AreEqual(testList, savedVenues);
+    }
   }
 }

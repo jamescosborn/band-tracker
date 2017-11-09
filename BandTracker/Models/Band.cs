@@ -74,7 +74,7 @@ namespace BandTracker.Models
         MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
         cmd.CommandText = @"SELECT venues.* FROM bands
             JOIN bands_venues ON (bands.id = bands_venues.band_id)
-            JOIN venues ON (bands_venues.band_id = venues.id)
+            JOIN venues ON (bands_venues.venue_id = venues.id)
             WHERE bands.id = @BandId;";
 
         MySqlParameter bandIdParameter = new MySqlParameter();

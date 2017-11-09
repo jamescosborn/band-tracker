@@ -14,7 +14,7 @@
   </ul>
 }
 <h4>Add a venue to this band:</h4>
-<form action=($'/bands/@Model["band"].Id/venues/new') method='post'>
+<form action='/bands/@Model["band"].Id/venues/new' method='post'>
   <label for='venue-id'>Select a venue</label>
   <select id='venue-id' name='venue-id' type='text'>
     @foreach (var venue in @Model["allVenues"])

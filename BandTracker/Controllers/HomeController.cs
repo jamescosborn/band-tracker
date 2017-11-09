@@ -24,6 +24,12 @@ namespace BandTracker.Controllers
       return View();
     }
 
+    [HttpGet("/bands/add")]
+    public ActionResult AddBand()
+    {
+      return View();
+    }
+
     [HttpPost("/venues/add/venue")]
     public ActionResult AddVenueSuccess()
     {
@@ -77,16 +83,16 @@ namespace BandTracker.Controllers
       return View(model);
     }
 
-    [HttpGet("/bands/{id}")]
-    public ActionResult BandDetail(int id)
-    {
-      Dictionary<string, object> model = new Dictionary<string, object>();
-      Band selectedBand = Band.Find(id);
-      List<Venue> bandsVenues = selectedBand.GetVenues();
-      model.Add("band", selectedBand);
-      model.Add("venues", bandsVenues);
-
-      return View(model);
-    }
+    // [HttpGet("/bands/{id}")]
+    // public ActionResult BandDetail(int id)
+    // {
+    //   Dictionary<string, object> model = new Dictionary<string, object>();
+    //   Band selectedBand = Band.Find(id);
+    //   List<Venue> bandsVenues = selectedBand.GetVenues();
+    //   model.Add("band", selectedBand);
+    //   model.Add("venues", bandsVenues);
+    //
+    //   return View(model);
+    // }
   }
 }

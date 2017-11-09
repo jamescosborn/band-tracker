@@ -2,9 +2,9 @@
   Layout = "_Layout";
 }
 <div class="well">
-<form action="/venues/@Model["venue"].Id/bands/add" method="post">
+<form action="/venues/add/band" method="post">
   <div class="form-group">
-    <label for="band-name">Band Name:</label>
+    <label for="band-name">Name:</label>
     <input class="form-control" id="band-name" name="band-name" type="text" required>
   </div>
   <button class="btn btn-danger" type="submit" name="submit-button">Add</button>

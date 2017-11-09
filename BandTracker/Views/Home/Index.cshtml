@@ -5,27 +5,31 @@
 <h1>Band Tracker</h1>
 <h3>Venues:</h3>
 @* Venue is an arbitrary name given to reference whatever is being used in the foreach loop *@
-@foreach(var spacelounge in Model["venues"])
+@foreach(var venue in Model["venues"])
 {
   <ul>
-  <li><a href="/venues/@spacelounge.Id">@spacelounge.Name</a></li>
+  <li><a href="/venues/@venue.Id">@venue.Name</a></li>
   </ul>
 }
 
 <h3>Bands:</h3>
-@foreach(var chumbawumba in Model["bands"])
+@foreach(var band in Model["bands"])
 {
   <ul>
-  <li><a href="/bands/@chumbawumba.Id">@chumbawumba.Name</a></li>
+  <li><a href="/bands/@band.Id">@band.Name</a></li>
   </ul>
 }
+<p><a href='/bands/add'>Add a new Band</a></p>
 <p><a href='/venues/add'>Add a new Venue</a></p>
 
 </div>
 
 
-<h2>Blacklist (<strong>do not</strong> add these bands):</h2>
+<h2>Band Blacklist (<strong>do not</strong> add these bands):</h2>
 <ul>
+  <li>Boston</li>
+  <li>The Police</li>
+  <li>Maroon 5</li>
   <li>My Chemical Romance</li>
   <li>Nickelback</li>
   <li>Creed</li>

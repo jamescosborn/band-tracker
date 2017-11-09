@@ -10,7 +10,7 @@ namespace BandTracker.Models.Tests
   {
     public BandTest()
     {
-      DBConfiguration.ConnectionString = "server=localhost; user id=root; password=root; port=3306; database=band_tracker_tests;";
+      DBConfiguration.ConnectionString = "server=localhost; user id=root; password=root; port=3306; database=band_tracker_test;";
     }
     public void Dispose()
     {

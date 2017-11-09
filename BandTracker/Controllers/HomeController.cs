@@ -35,40 +35,10 @@ namespace BandTracker.Controllers
       return View(model);
     }
 
-    [HttpPost("/venues/add/band/success")]
+    [HttpPost("/venues/bands/add")]
     public ActionResult AddBandSuccess()
     {
       return View("AddBandSuccess");
-    }
-
-    [HttpGet("/venues/{venueId}/bands/{bandId}/update")]
-    public ActionResult UpdateBand(int venueId, int bandId)
-    {
-      Dictionary<string, object> model = new Dictionary<string, object>();
-      Venue selectedVenue = Venue.FindById(venueId);
-      Band selectedBand = Band.Find(bandId);
-      model.Add("venue", selectedVenue);
-      model.Add("band", selectedBand);
-      return View(model);
-    }
-
-    [HttpPost("/venues/{venueId}/bands/{bandId}/update/success")]
-    public ActionResult UpdateBandSuccess(int bandId)
-    {
-      Console.WriteLine(bandId);
-
-      Band selectedBand = Band.Find(bandId);
-      selectedBand.Update(Request.Form["band-update"]);
-      Console.WriteLine(selectedBand.Name);
-      Console.WriteLine(Request.Form["band-update"]);
-      return View();
-    }
-
-    [HttpPost("/venues/{venueId}/bands/{bandId}/delete/success")]
-    public ActionResult DeleteBandSuccess(int bandId)
-    {
-      Band.Delete(bandId);
-      return View();
     }
 
     [HttpGet("/venues/{venueId}/bands/new")]
@@ -107,5 +77,16 @@ namespace BandTracker.Controllers
       return View(model);
     }
 
+    [HttpGet("/bands/{id}")]
+    public ActionResult BandDetail(int id)
+    {
+      Dictionary<string, object> model = new Dictionary<string, object>();
+      Band selectedBand = Band.Find(id);
+      List<Venue> bandsVenues = selectedBand.GetVenues();
+      model.Add("band", selectedBand);
+      model.Add("venues", bandsVenues);
+
+      return View(model);
+    }
   }
 }

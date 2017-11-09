@@ -10,7 +10,7 @@ namespace BandTracker.Models.Tests
   {
     public VenueTests()
     {
-      DBConfiguration.ConnectionString = "server=localhost; user id=root; password=root; port=3306; database=band_tracker_tests;";
+      DBConfiguration.ConnectionString = "server=localhost; user id=root; password=root; port=3306; database=band_tracker_test;";
     }
     public void Dispose()
     {
@@ -21,6 +21,7 @@ namespace BandTracker.Models.Tests
     public void GetAll_DatabaseIsEmptyAtFirst_0()
     {
       int result = Venue.GetAll().Count;
+
       Assert.AreEqual(0, result);
     }
     [TestMethod]

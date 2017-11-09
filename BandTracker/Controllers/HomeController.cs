@@ -70,7 +70,8 @@ namespace BandTracker.Controllers
     [HttpPost("/venues/{venueId}/delete/success")]
     public ActionResult DeleteVenueSuccess(int venueId)
     {
-      Venue.Delete(venueId);
+      Venue selectedVenue = Venue.FindById(venueId);
+      selectedVenue.Delete();
       return View();
     }
 
@@ -90,19 +91,53 @@ namespace BandTracker.Controllers
       return View("VenueDetail", model);
     }
 
+    //ONE TASK
+    [HttpGet("/bands/{id}")]
+    public ActionResult BandDetail(int id)
+    {
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        Band selectedBand = Band.Find(id);
+        List<Venue> BandVenues = selectedBand.GetVenues();
+        List<Venue> AllVenues = Venue.GetAll();
+        model.Add("band", selectedBand);
+        model.Add("bandVenues", BandVenues);
+        model.Add("allVenues", AllVenues);
+        return View( model);
+    }
 
-
+    //ONE CATEGORY
     [HttpGet("/venues/{id}")]
     public ActionResult VenueDetail(int id)
     {
-      Dictionary<string, object> model = new Dictionary<string, object>();
-      Venue selectedVenue = Venue.FindById(id);
-      List<Band> venuesBands = selectedVenue.GetBands();
-      model.Add("venue", selectedVenue);
-      model.Add("bands", venuesBands);
-
-      return View(model);
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        Venue SelectedVenue = Venue.FindById(id);
+        List<Band> VenueBands = SelectedVenue.GetBands();
+        List<Band> AllBands = Band.GetAll();
+        model.Add("venue", SelectedVenue);
+        model.Add("venueBands", VenueBands);
+        model.Add("allBands", AllBands);
+        return View(model);
     }
+    //ADD TASK TO CATEGORY
+    [HttpPost("venues/{venueId}/bands/new")]
+    public ActionResult VenueAddBand(int venueId)
+    {
+        Venue venue = Venue.FindById(venueId);
+        Band band = Band.Find(Int32.Parse(Request.Form["band-id"]));
+        venue.AddBand(band);
+        return View("AddBandSuccess");
+    }
+    //ADD CATEGORY TO TASK
+    [HttpPost("bands/{bandId}/venues/new")]
+    public ActionResult BandAddVenue(int bandId)
+    {
+        Band band = Band.Find(bandId);
+        Venue venue = Venue.FindById(Int32.Parse(Request.Form["venue-id"]));
+        band.AddVenue(venue);
+        return View("AddVenueSuccess");
+    }
+  }
+}
 
     // [HttpGet("/bands/{id}")]
     // public ActionResult BandDetail(int id)
@@ -124,5 +159,3 @@ namespace BandTracker.Controllers
     //   model.Add("venue", selectedVenue);
     //   return View(model);
     // }
-  }
-}

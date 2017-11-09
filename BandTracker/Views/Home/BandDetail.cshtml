@@ -1,19 +1,27 @@
 @using BandTracker.Models;
-@{
-  Layout = "_Layout";
-}
-<div class="well">
-<h1>Band Info:</h1>
-<h2>Name: @Model["band"].Name</h2>
-<h2>Venues this band has played at:</h2>
 
-@{
-  foreach(var venue in Model["venues"])
-  {
-    <h3>@venue.Name</h3>
-  }
+<h1>Band Tracker</h1>
+<h2>Band: @Model["band"].Name</h2>
+<hr />
+@if (@Model["bandVenues"].Count != 0)
+{
+  <h4>This band has these venues:</h4>
+  <ul>
+    @foreach (Venue venue in @Model["bandVenues"])
+    {
+      <li>@venue.Name</li>
+    }
+  </ul>
 }
-
-<ul>
-<li><a href="/">Home</a></li>
-</ul>
+<h4>Add a venue to this band:</h4>
+<form action=($'/bands/@Model["band"].Id/venues/new') method='post'>
+  <label for='venue-id'>Select a venue</label>
+  <select id='venue-id' name='venue-id' type='text'>
+    @foreach (var venue in @Model["allVenues"])
+    {
+      <option value='@venue.Id'>@venue.Name</option>
+    }
+  </select>
+  <button type='submit'>Add</button>
+</form>
+<p><a href="/">Return to Main Page</a></p>

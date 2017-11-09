@@ -9,7 +9,7 @@ namespace BandTracker.Models
     public int Id {get; private set;}
     public string Name {get; private set;}
 
-    public Band(string name, int venueId = 0, int id = 0)
+    public Band(string name, int id = 0)
     {
       Name = name;
       Id = id;
@@ -161,7 +161,6 @@ namespace BandTracker.Models
       name.ParameterName = "@Name";
       name.Value = this.Name;
       cmd.Parameters.Add(name);
-
 
       cmd.ExecuteNonQuery();
       this.Id = (int)cmd.LastInsertedId;

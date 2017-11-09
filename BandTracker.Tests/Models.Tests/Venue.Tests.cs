@@ -77,6 +77,10 @@ namespace BandTracker.Models.Tests
       Venue localVenue = new Venue("The Crystal Ballroom");
       localVenue.Save();
       Venue databaseVenue = Venue.FindById(localVenue.Id);
+      Console.WriteLine(localVenue.Id);
+      Console.WriteLine(localVenue.Name);
+      Console.WriteLine(databaseVenue.Id);
+      Console.WriteLine(databaseVenue.Name);
 
       bool result = localVenue.HasSamePropertiesAs(databaseVenue);
 

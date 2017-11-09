@@ -56,7 +56,6 @@ namespace BandTracker.Models.Tests
 
       List<Band> bands = Band.GetAll();
       int result = bands.Count;
-      Console.WriteLine(result);
 
       Assert.AreEqual(true,Band.GetAll().Count==1);
     }
@@ -67,6 +66,10 @@ namespace BandTracker.Models.Tests
       Band localBand = new Band("MGMT");
       localBand.Save();
       Band databaseBand = Band.Find(localBand.Id);
+      Console.WriteLine(localBand.Id);
+      Console.WriteLine(localBand.Name);
+      Console.WriteLine(databaseBand.Id);
+      Console.WriteLine(databaseBand.Name);
 
       bool result = localBand.HasSamePropertiesAs(databaseBand);
 
